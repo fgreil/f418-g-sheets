@@ -1,6 +1,16 @@
 # f418-g-sheets
 A simple (Expo) React Native app to add new lines to Google Sheets.
 
+```
+f418-g-sheets/
+├── assets/
+│   ├── icon.png              # App icon (1024x1024)
+│   ├── splash.png            # Splash screen image
+│   ├── adaptive-icon.png     # Android adaptive icon
+│   └── favicon.png           # Web favicon
+[...]
+```
+
 ## Objective
 As you know, in Google Sheets, I can get an "anyone with the link can edit" URL for a Google Sheet by clicking the Share button, going to "General access," changing the setting from "Restricted" to "Anyone with the link," and select the Editor role, then copying the link and sharing it. This is the point for what want to build a very simple React-Native Expo App for.
 
