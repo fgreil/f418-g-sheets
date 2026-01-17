@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Google Sheets Data Entry",
-    "slug": "google-sheets-app",
-    "version": "1.0.0",
+    "name": "f418-g-sheets",
+    "slug": "f418-g-sheets",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,17 +16,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.googlesheetsapp"
+      "bundleIdentifier": "com.fgreil.f418gsheets"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yourcompany.googlesheetsapp"
+      "package": "com.fgreil.f418gsheets"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "owner": "fgreil"
   }
 }
