@@ -1,6 +1,7 @@
 # f418-g-sheets
 A simple (Expo) React Native app to add new lines to Google Sheets.
 
+## Project structure
 ```
 f418-g-sheets/
 ├── assets/
@@ -8,7 +9,16 @@ f418-g-sheets/
 │   ├── splash.png            # Splash screen image
 │   ├── adaptive-icon.png     # Android adaptive icon
 │   └── favicon.png           # Web favicon
-[...]
+├── utils/
+│   └── sheetHelper.js        # Google Sheets integration helpers
+├── screens/
+│   ├── MainScreen.js         # Main screen with markdown carousel
+│   └── SettingsScreen.js     # Configuration management
+├── .gitignore                # Git ignore file
+├── app.json                  # Expo configuration
+├── App.js                    # Main app component with navigation
+├── package.json              # Project dependencies and scripts
+└── package-lock.json         # Locked dependency versions (will be generated)
 ```
 
 ## Objective
