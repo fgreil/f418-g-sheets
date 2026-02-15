@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>f418.eu/g-sheets :: Google Sheets Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #fbfbfd;
+            color: #1d1d1f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .lang-toggle a {
+            color: #86868b;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .lang-toggle a:hover:not(.active) {
+            color: #1d1d1f;
+        }
+
+        .lang-toggle a.active {
+            background: #502379;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: clamp(14px, 2.5vw, 17px);
+            color: #86868b;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            padding: clamp(20px, 4vw, 30px);
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e5e5e7;
+            border-radius: 12px;
+            background: #fbfbfd;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #502379;
+            background: #fff;
+        }
+
+        button {
+            background: #502379;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #5f2a8f;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info {
+            font-size: 13px;
+            color: #86868b;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
+            display: none;
+            margin-top: 16px;
+            color: #c53030;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .content-container {
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            display: none;
+        }
+
+        .content-container.show {
+            display: block;
+        }
+
+        .sheet-viewer {
+            height: 600px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .sheet-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            font-size: 14px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            color: #86868b;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #86868b;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-toggle">
+        <a href="#" class="lang-link active" data-lang="en">EN</a>
+        <a href="#" class="lang-link" data-lang="de">DE</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 data-en="Google Sheets Viewer" data-de="Google Sheets Betrachter">Google Sheets Viewer</h1>
+            <div class="subtitle" data-en="View publicly shared Google Sheets in a simple interface" data-de="Öffentlich geteilte Google Sheets in einer einfachen Oberfläche anzeigen">
+                View publicly shared Google Sheets in a simple interface
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-row">
+                <input 
+                    type="text" 
+                    id="sheetUrl" 
+                    data-en="Paste your Google Sheets URL here..."
+                    data-de="Fügen Sie hier Ihre Google Sheets-URL ein..."
+                    placeholder="Paste your Google Sheets URL here..."
+                    value="https://docs.google.com/spreadsheets/d/1X9j_WtQrTaVoLktd_9t_xklpN3JLlZA9oCry2kJ6uEw/edit?gid=0#gid=0"
+                >
+                <button onclick="loadSheet()" data-en="Load" data-de="Laden">Load</button>
+            </div>
+            
+            <div class="info">
+                <span data-en="<strong>Note:</strong> Only the first sheet tab (determined by the gid in your URL) is displayed." 
+                      data-de="<strong>Hinweis:</strong> Es wird nur die erste Registerkarte angezeigt (bestimmt durch die gid in Ihrer URL).">
+                    <strong>Note:</strong> Only the first sheet tab (determined by the gid in your URL) is displayed.
+                </span>
+            </div>
+
+            <div id="error" class="error"></div>
+        </div>
+
+        <div id="placeholder" class="placeholder" data-en="Enter a Google Sheets URL above and click &quot;Load Sheet&quot;" data-de="Geben Sie oben eine Google Sheets-URL ein und klicken Sie auf &quot;Tabelle laden&quot;">
+            Enter a Google Sheets URL above and click "Load Sheet"
+        </div>
+
+        <div id="contentContainer" class="content-container">
+            <div class="sheet-viewer">
+                <iframe id="sheetFrame" class="sheet-frame"></iframe>
+            </div>
+        </div>
+
+        <div class="footer">
+            https://f418.eu/g-sheets/ ☆ 2026-02-15
+        </div>
+    </div>
+
+    <script>
+        let spreadsheetId = null;
+        let currentGid = null;
+        let currentLang = 'en';
+
+        // Language switching
+        document.querySelectorAll('.lang-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-lang');
+                switchLanguage(lang);
+            });
+        });
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // Update active state
+            document.querySelectorAll('.lang-link').forEach(link => {
+                if (link.getAttribute('data-lang') === lang) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Update all elements with language attributes
+            document.querySelectorAll('[data-en][data-de]').forEach(element => {
+                const text = element.getAttribute('data-' + lang);
+                if (element.tagName === 'INPUT') {
+                    element.placeholder = text;
+                } else if (element.tagName === 'BUTTON') {
+                    element.textContent = text;
+                } else {
+                    element.innerHTML = text;
+                }
+            });
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('sheetUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadSheet();
+            }
+        });
+
+        async function loadSheet() {
+            const urlInput = document.getElementById('sheetUrl');
+            const errorDiv = document.getElementById('error');
+            const placeholder = document.getElementById('placeholder');
+            const contentContainer = document.getElementById('contentContainer');
+            
+            const url = urlInput.value.trim();
+            
+            // Clear previous error
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+            
+            if (!url) {
+                showError(currentLang === 'en' ? 'Please enter a URL' : 'Bitte geben Sie eine URL ein');
+                return;
+            }
+
+            // Validate it's a Google Sheets URL
+            if (!url.includes('docs.google.com/spreadsheets/')) {
+                showError(currentLang === 'en' ? 'Please enter a valid Google Sheets URL' : 'Bitte geben Sie eine gültige Google Sheets-URL ein');
+                return;
+            }
+
+            // Extract sheet ID
+            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+            if (!match) {
+                showError(currentLang === 'en' ? 'Could not extract spreadsheet ID from URL' : 'Tabellen-ID konnte nicht aus der URL extrahiert werden');
+                return;
+            }
+
+            spreadsheetId = match[1];
+            
+            // Extract gid from URL if present
+            const gidMatch = url.match(/[#&]gid=(\d+)/);
+            currentGid = gidMatch ? gidMatch[1] : '0';
+            
+            // Show UI
+            placeholder.style.display = 'none';
+            contentContainer.classList.add('show');
+            
+            // Load the iframe
+            const iframe = document.getElementById('sheetFrame');
+            iframe.src = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/htmlembed?gid=${currentGid}&rm=minimal&single=true&widget=false&chrome=false`;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        // Load the default URL on page load
+        window.addEventListener('load', function() {
+            loadSheet();
+        });
+    </script>
+</body>
+</html>
